@@ -2,8 +2,8 @@ from fastapi import FastAPI, UploadFile, File
 from pathlib import Path
 import shutil
 
-from app.parser import extract_text_from_pdf
-
+from app.parser import extract_document_from_pdf
+from app.analyzer import analyze_pdf
 
 app = FastAPI(
     title="Drishti-Scribe API",
@@ -36,9 +36,9 @@ async def upload_pdf(file: UploadFile = File(...)):
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    pages = extract_text_from_pdf(str(file_path))
+    analysis = analyze_pdf(str(file_path))
 
     return {
-        "filename": file.filename,
-        "pages": pages
+    "filename": file.filename,
+    "analysis": analysis.model_dump()
     }
