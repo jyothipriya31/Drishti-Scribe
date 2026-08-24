@@ -17,6 +17,7 @@ client = genai.Client(api_key=api_key)
 
 
 class Element(BaseModel):
+    id: str = ""
     type: str
     text: str
     description: str
@@ -67,4 +68,10 @@ Do not omit important visual information.
         },
     )
 
-    return DocumentAnalysis.model_validate_json(response.text)
+    analysis = DocumentAnalysis.model_validate_json(response.text)
+
+    for page in analysis.pages:
+        for index, element in enumerate(page.elements, start=1):
+            element.id = f"p{page.page}_e{index}"
+
+    return analysis

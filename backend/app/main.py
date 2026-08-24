@@ -40,5 +40,5 @@ async def upload_pdf(file: UploadFile = File(...)):
 
     return {
     "filename": file.filename,
-    "analysis": analysis.model_dump()
+    "pages": analysis.model_dump()["pages"]
     }
