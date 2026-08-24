@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 import shutil
 
@@ -9,6 +10,14 @@ app = FastAPI(
     title="Drishti-Scribe API",
     description="Backend for accessible document understanding",
     version="0.1.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

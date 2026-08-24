@@ -150,8 +150,9 @@ async function analyzeDocument() {
         }
 
 
-        documentAnalysis =
-            data.analysis;
+        documentAnalysis = {
+            pages: data.pages
+        };
 
 
         documentTitle.textContent =
@@ -232,8 +233,7 @@ function renderReader() {
         pages[currentPageIndex];
 
 
-    const elements =
-        page.elements || [];
+    const elements = page.elements || [];
 
 
     pageIndicator.textContent =
@@ -500,6 +500,26 @@ function previousElement() {
 
 }
 
+
+function updateButtons() {
+    const previousButton = document.getElementById("prevBtn");
+    const nextButton = document.getElementById("nextBtn");
+
+    if (!previousButton || !nextButton) {
+        return;
+    }
+
+    const page = pages[currentPageIndex];
+    const elements = page ? page.elements || [] : [];
+
+    previousButton.disabled =
+        currentPageIndex === 0 &&
+        currentElementIndex === 0;
+
+    nextButton.disabled =
+        currentPageIndex === pages.length - 1 &&
+        currentElementIndex >= elements.length - 1;
+}
 
 // --------------------------------------------------
 // Speech
